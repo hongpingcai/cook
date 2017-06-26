@@ -48,13 +48,15 @@ python step3_test.py --i ../img/sandwich/train_1009.jpg --gpu -1
 
 ## How to use the codes
 NOTE: If you only want to do prediction for one image or a bundle of images, then only need run step3, as I have uploaded the splitted data list (step1) and the trained model (step2). 
-**step1**: randomly split the image set into training set (5/6) and test set (1/6)
+
+**step1**: Randomly split the image set into training set (5/6) and test set (1/6)
 ```
 cd COOK_DIR/codes
 python step1_data_split.py
 ```
 
-**step2**: training the caffe model 
+**step2**: Train the caffe model 
+
 Please change the COOK_DIR in step2_train.sh before running.
 Also change a few directories in prototxt/train_val.prototxt and prototxt/solver_lr0001_fix3.prototxt.
 ```
@@ -67,7 +69,8 @@ cd COOK_DIR/codes
 python plot_learning_curve.py ../log/caffenetcook_lr0001_fix3.log ../log/caffenetcook_lr0001_fix3_learning_curve.png
 ```
 
-**step3**: prediction with the trained model
+**step3**: Prediction with the trained model.
+
 Three inputs are surported to predict labels:
 
 - a single image input
@@ -104,14 +107,17 @@ I have randomly split the given image set into training set (5/6 of the whole se
 - weight decay; 0.0005
 
 ## Results
+#### Convergence
 The following is the learning curve: 
 
 ![Alt text](log/caffenetcook_lr0001_fix3_learning_curve.png?raw=true "Title")
 
 After about 200 iterations, the loss on both training set and test set keep stable.
 
+#### Accuracy
 The accuracy (= #img_correct_predict/134) on the 134 test images is **86.6%** with the trained model from step2.
 
+#### Time
 Currently on my computer, the training takes about 4 minutes (for 400 iterations) with GPU (Titan X Pascal), the prediction time is about 0.03 seconds/image with GPU, or 0.16 seconds/image with CPU. 
 
 ## Analysis
