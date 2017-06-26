@@ -1,0 +1,6 @@
+## Caffe models
+model/*
+
+## Data
+*.jpg
+
