@@ -1,43 +1,60 @@
 
 ## Prediction: Sushi or Sandwich
 
-Given an image, this project is to predict it is sushi or sandwich. 
+Given an image, this project is to predict it is sushi or sandwich.
 
-## Quick started
+## Dependencies
+- caffe, pycaffe (http://caffe.berkeleyvision.org/installation.html)
+
+- python (https://www.python.org/downloads/) 
+
+## Quick start
 Suppose you have cloned the repository into COOK_DIR
+
+First, you need download the models from (https://drive.google.com/open?id=0BxcbdpkZeozjcnVoTW84SlhwVjg) and extract them into COOK_DIR/model/
+
+Then, if you don't have an image for testing, you may also need download all the images (I used for training and test) as follows. If you have images for testing, then skip the following downloading and go directly for prediction.
+
+```
+cd COOK_DIR
+wget http://research.us-east-1.s3.amazonaws.com/public/sushi_or_sandwich_photos.zip
+unzip sushi_or_sandwich_photos.zip
+rm sushi_or_sandwich_photos.zip
+mv sushi_or_sandwich_photos/* img/.
+rm -r sushi_or_sandwich_photos/
+```
+Now, run the prediction as follows.
 
 ```
 cd COOK_DIR/codes
 python step3_test.py --i ../img/sandwich/train_1009.jpg 
 
 ```
-After a while, you should see the image displayed and its predicted label. stepp3_test.py has more inputs supported, please referred to the 'How to use the codes' section. 
+After a while, you should see the image displayed and its predicted label. step3_test.py has more inputs supported, please referred to the 'How to use the codes' section. 
 You would see such output on the screen:
 
 ********** Prediction:
 
 ../img/sandwich/train_1009.jpg --*Sandwich*-- (probability: 0.999996 )
 
-********** 1 images,0.0816650390625 seconds
+********** 1 images,0.0816650390625 seconds with GPU.
 
-## Dependencies
-- caffe, pycaffe
+The codes defaultly use GPU. If you don't have GPU, you may run with CPU as follows.
+```
+cd COOK_DIR/codes
+python step3_test.py --i ../img/sandwich/train_1009.jpg --gpu -1
 
-See: Installation of caffe (http://caffe.berkeleyvision.org/installation.html)
-
-- python
-
-See: Downloading python (https://www.python.org/downloads/)
+```
 
 ## How to use the codes
 NOTE: If you only want to do prediction for one image or a bundle of images, then only need run step3, as I have uploaded the splitted data list (step1) and the trained model (step2). 
-1. **step1**: randomly split the image set into training set (5/6) and test set (1/6)
+**step1**: randomly split the image set into training set (5/6) and test set (1/6)
 ```
 cd COOK_DIR/codes
 python step1_data_split.py
 ```
 
-2. **step2**: training the caffe model 
+**step2**: training the caffe model 
 Please change the COOK_DIR in step2_train.sh before running.
 Also change a few directories in prototxt/train_val.prototxt and prototxt/solver_lr0001_fix3.prototxt.
 ```
@@ -50,7 +67,7 @@ cd COOK_DIR/codes
 python plot_learning_curve.py ../log/caffenetcook_lr0001_fix3.log ../log/caffenetcook_lr0001_fix3_learning_curve.png
 ```
 
-3. **step3**: prediction with the trained model
+**step3**: prediction with the trained model
 Three inputs are surported to predict labels:
 
 - a single image input
@@ -70,7 +87,7 @@ python step3_test.py --i ../img/sandwich/
 cd COOK_DIR/codes
 python step3_test.py --i ../img/test.txt
 ```
-As there is ground-truth labels available, the accuracy will be also outputed at the end.
+As there are ground-truth labels available, the accuracy will be also outputed at the end.
 
 To note: As default, the prediction uses the model trained from training set. But if you predict images outside of the current dataset, it is better to use the following code to utilize the model trained from the whole dataset (training+test):
 ```
