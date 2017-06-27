@@ -3,10 +3,24 @@
 Title		:step3_test.py
 Description	:Input an image (either sushi or sandwich), predict what it is.
 Usage		:
-    python step3_test.py
-    python step3_test.py --i ../img/sandwich/train_4386.jpg
-OUTPUT		:img/train.txt
-		 img/test.txt
+	Three inputs are surported to predict labels:
+	-1- a single image input
+	    cd COOK_DIR/codes
+      	    python step3_test.py --i ../img/sandwich/train_1009.jpg 
+	-2- a directory input. All the jpg images inside this directory will be tested
+	    cd COOK_DIR/codes
+     	    python step3_test.py --i ../img/sandwich/
+	-3- a text file (.txt) with images and labels listed on each row. 
+	    cd COOK_DIR/codes
+   	    python step3_test.py --i ../img/test.txt
+
+	As there are ground-truth labels available, the accuracy will be also outputed at the end.
+
+	To note: As default, the prediction uses the model trained from training set. 
+	But if you predict images outside of the current dataset, it is better to use the 
+	following code to utilize the model trained from the whole dataset (training+test):
+	    cd COOK_DIR/codes
+	    python step3_test.py --i ../img/test.txt --model ../model/alldata_caffenetcook_lr0001_fix3_iter_400.caffemodel
 Author		:Hongping Cai
 Data		:26/06/2017	
 '''
@@ -19,7 +33,7 @@ import argparse
 import Image
 import time
 
-DIR_ROOT = "/media/deepthought/DATA/Hongping/Codes/cook/"
+DIR_ROOT = "../"
 IMAGE_WIDTH = 256
 IMAGE_HEIGHT = 256
 
@@ -28,7 +42,7 @@ def parse_args():
     Parse input arguments
     """
     parser = argparse.ArgumentParser(description='Predict suchi or sandwich')
-    parser.add_argument('--gpu', dest='gpu_id', help='GPU id to use',
+    parser.add_argument('--gpu', dest='gpu_id', help='GPU id to use, if -1, means CPU',
                         default=0, type=int)
     parser.add_argument('--prototxt', dest='prototxt',
                         help='deploy prototxt file defining the network',
@@ -37,16 +51,12 @@ def parse_args():
                         help='caffe model to test',
                         default= DIR_ROOT + 'model/caffenetcook_lr0001_fix3_iter_400.caffemodel', type=str)
     parser.add_argument('--mean', dest='file_mean',
-                        help='the mean file (*.npy)',
+                        help='the python mean file (*.npy)',
                         default= DIR_ROOT + 'model/ilsvrc_2012_mean.npy', type=str)
     parser.add_argument('--i', dest='file_input',
-                        help='input image (either suchi or sandwich',
+                        help='input image or folder. 3 options: a)a single image input. b)a directory input. All the jpg images inside this directory will be tested. c)a text file (.txt) with images and labels listed on each row.',
                         default='../img/sushi/train_8886.jpg', type=str)
 
-
-    #if len(sys.argv) == 1:
-    #   parser.print_help()
-    #   sys.exit(1)
 
     args = parser.parse_args()
     return args
@@ -121,7 +131,7 @@ if __name__ == '__main__':
     out_probs  = []
     start_time = time.time()
     for im_file in im_files:
-    	im = caffe.io.load_image(im_file)#(args.file_input)
+    	im = caffe.io.load_image(im_file)
     	#im = caffe.io.resize_image(im, [IMAGE_HEIGHT,IMAGE_WIDTH])
     	#print net.blobs['data'].data.shape
     	#print net.blobs['data'].data.shape[2:]
@@ -137,8 +147,6 @@ if __name__ == '__main__':
     print "********** Prediction:"
     objs_name = {0:"--*Sandwich*--",1:"--*Sushi*--"}
     for i in range(len(im_files)):
-	#print out_labels[i]
-	#print out_probs[i]
 	print im_files[i],objs_name[out_labels[i]],"(probability:",out_probs[i],")"
 
     if len(im_labels)>0: #gt labels offered
@@ -155,21 +163,4 @@ if __name__ == '__main__':
      	print "**********",len(im_files),"images, %s seconds with GPU." % elapsed_time
 
 
-
-'''
-DIR_ROOT = "/media/deepthought/DATA/Hongping/Codes/cook/"
-dir_img  = DIR_ROOT + "img/"
-classes = {'sandwich':0, 'sushi':1}
-
-# 
-
-file_input_im = str(sys.argv
-
-# 
-file_prototxt = DIR_ROOT + 'prototxt/deploy.prototxt'
-file_model    = DIR_ROOT + 'model/caffenetcook_lr001_fix3_iter_400.caffemodel'
-net = caffe.Net(file_prototxt, file_model,caffe.TEST)
-
-# Transform the image
-'''
 

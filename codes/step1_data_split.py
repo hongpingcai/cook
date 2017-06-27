@@ -2,8 +2,8 @@
 Title		:step1_data_split.py
 Description	:Randomly split the images into training set (5/6) and test set (1/6)
 Usage		:python step1_data_split.py
-OUTPUT		:img/train.txt
-		 img/test.txt
+OUTPUT		:img/train.txt, img/train_shuffle.txt
+		 img/test.txt,  img/test_shuffle.txt
 Author		:Hongping Cai
 Data		:26/06/2017	
 '''
@@ -11,7 +11,7 @@ Data		:26/06/2017
 import numpy as np
 import os, os.path
 
-dir_root = "/media/deepthought/DATA/Hongping/Codes/cook/"
+dir_root = "../"
 dir_img  = dir_root + "img/"
 classes = {'sandwich':0, 'sushi':1}
 ratio_train = 5.0/6.0
