@@ -10,18 +10,30 @@ Data		:26/06/2017
 
 import numpy as np
 import os, os.path
+import argparse
 
-dir_root = "../"
-dir_img  = dir_root + "img/"
-classes = {'sandwich':0, 'sushi':1}
-ratio_train = 5.0/6.0
+def parse_args():
+    """
+    Parse input arguments
+    """
+    parser = argparse.ArgumentParser(description='Randomly split the images into training set (5/6) and test set (1/6)')
+    args = parser.parse_args()
+    return args
 
-np.random.seed(0)
-tr_files = []
-te_files = []
-tr_labels = []
-te_labels = []
-for cls in classes:
+
+if __name__ == '__main__':
+    args = parse_args()
+    dir_root = "../"
+    dir_img  = dir_root + "img/"
+    classes = {'sandwich':0, 'sushi':1}
+    ratio_train = 5.0/6.0
+
+    np.random.seed(0)
+    tr_files = []
+    te_files = []
+    tr_labels = []
+    te_labels = []
+    for cls in classes:
 	cur_label = classes[cls]
 	n_members = len([name for name in os.listdir(dir_img+cls) if name.endswith(".jpg")])
 	print '**id',cur_label,cls,n_members,'images'
@@ -48,33 +60,45 @@ for cls in classes:
 	print 'len(te_files)',len(te_files)
 	print 'len(te_labels)',len(te_labels)
 
-#write the training file
-txt_file = dir_img + "train.txt"
-with open(txt_file,"w") as fid:
-	for i in range(len(tr_files)):
+    #write the training file
+    txt_file = dir_img + "train.txt"
+    if os.path.exists(txt_file):
+	print txt_file, "exists. Nothing to do."
+    else:
+    	with open(txt_file,"w") as fid:
+	    for i in range(len(tr_files)):
 		fid.write("%s %d\n" % (tr_files[i], tr_labels[i]))
 
-#write the test file
-txt_file = dir_img + "test.txt"
-with open(txt_file,"w") as fid:
-	for i in range(len(te_files)):
+    #write the test file
+    txt_file = dir_img + "test.txt"    
+    if os.path.exists(txt_file):
+	print txt_file, "exists. Nothing to do."
+    else:
+    	with open(txt_file,"w") as fid:
+	    for i in range(len(te_files)):
 		fid.write("%s %d\n" % (te_files[i], te_labels[i]))
 
-np.random.seed(0)
-#write the training file, shuffled
-ids_shuffle = np.random.permutation(range(len(tr_files)))
+    np.random.seed(0)
+    #write the training file, shuffled
+    ids_shuffle = np.random.permutation(range(len(tr_files)))
 
-txt_file = dir_img + "train_shuffle.txt"
-with open(txt_file,"w") as fid:
-	for i in range(len(tr_files)):
+    txt_file = dir_img + "train_shuffle.txt"   
+    if os.path.exists(txt_file):
+	print txt_file, "exists. Nothing to do."
+    else:
+    	with open(txt_file,"w") as fid:
+	    for i in range(len(tr_files)):
 		cur_i = ids_shuffle[i]
 		fid.write("%s %d\n" % (tr_files[cur_i], tr_labels[cur_i]))
 
-#write the test file, shuffled
-ids_shuffle = np.random.permutation(range(len(te_files)))
-txt_file = dir_img + "test_shuffle.txt"
-with open(txt_file,"w") as fid:
-	for i in range(len(te_files)):
+    #write the test file, shuffled
+    ids_shuffle = np.random.permutation(range(len(te_files)))
+    txt_file = dir_img + "test_shuffle.txt"   
+    if os.path.exists(txt_file):
+	print txt_file, "exists. Nothing to do."
+    else:
+    	with open(txt_file,"w") as fid:
+	    for i in range(len(te_files)):
 		cur_i = ids_shuffle[i]
 		fid.write("%s %d\n" % (te_files[cur_i], te_labels[cur_i]))
 	
