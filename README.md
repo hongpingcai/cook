@@ -13,7 +13,18 @@ Suppose you have cloned the repository into COOK_DIR
 
 First, you need download the models from (https://drive.google.com/open?id=0BxcbdpkZeozjcnVoTW84SlhwVjg) and extract them into COOK_DIR/model/
 
-Then, if you don't have an image for testing, you may also need download all the images (I used for training and test) as follows. If you have images for testing, then skip the following downloading and go directly for prediction.
+Now, run the prediction with an input image:
+
+```
+cd COOK_DIR/codes
+python step3_test.py --i ../img/your_img.jpg 
+
+```
+The codes defaultly use GPU. If you don't have GPU, just add '--gpu -1' at the end of the above command.
+
+## How to use the codes
+
+Before using the codes, you need first download the sushi-and-sandwich dataset (I used for training and test) as follows. 
 
 ```
 cd COOK_DIR
@@ -23,31 +34,8 @@ rm sushi_or_sandwich_photos.zip
 mv sushi_or_sandwich_photos/* img/.
 rm -r sushi_or_sandwich_photos/
 ```
-Now, run the prediction as follows.
 
-```
-cd COOK_DIR/codes
-python step3_test.py --i ../img/sandwich/train_1009.jpg 
-
-```
-After a while, you should see the image displayed and its predicted label. step3_test.py has more inputs supported, please referred to the 'How to use the codes' section. 
-You would see such output on the screen:
-
-********** Prediction:
-
-../img/sandwich/train_1009.jpg --*Sandwich*-- (probability: 0.999996 )
-
-********** 1 images,0.0816650390625 seconds with GPU.
-
-The codes defaultly use GPU. If you don't have GPU, you may run with CPU as follows.
-```
-cd COOK_DIR/codes
-python step3_test.py --i ../img/sandwich/train_1009.jpg --gpu -1
-
-```
-
-## How to use the codes
-NOTE: If you only want to do prediction for one image or a bundle of images, then only need run step3, as I have uploaded the splitted data list (step1) and the trained model (step2). 
+*NOTE*: If you only want to do prediction for one image or a bundle of images, then only need run step3, as I have uploaded the splitted data list (step1) and the trained model (step2). 
 
 **step1**: Randomly split the image set into training set (5/6) and test set (1/6)
 ```
@@ -63,7 +51,7 @@ Also change a few directories in prototxt/train_val.prototxt and prototxt/solver
 cd CAFFE_ROOT
 sh COOK_DIR/codes/step2_train.sh
 ```
-After training, you'd better check the learning curve. Please change the caffe_path inside plot_learning_curve.py before running the following codes.  (The output figure is saved as ../log/caffenetcook_learning_curve.png)
+After training, you'd better check the learning curve. Please change the caffe_path inside plot_learning_curve.py before running the following codes.  The output figure is saved as ../log/caffenetcook_learning_curve.png
 ```
 cd COOK_DIR/codes
 python plot_learning_curve.py ../log/caffenetcook_lr0001_fix3.log ../log/caffenetcook_lr0001_fix3_learning_curve.png
@@ -92,7 +80,7 @@ python step3_test.py --i ../img/test.txt
 ```
 As there are ground-truth labels available, the accuracy will be also outputed at the end.
 
-To note: As default, the prediction uses the model trained from training set. But if you predict images outside of the current dataset, it is better to use the following code to utilize the model trained from the whole dataset (training+test):
+*Note*: As default, the prediction uses the model trained from training set. But if you predict images outside of the current dataset, it is better to use the following code to utilize the model trained from the whole dataset (training+test):
 ```
 cd COOK_DIR/codes
 python step3_test.py --i ../img/test.txt --model ../model/alldata_caffenetcook_lr0001_fix3_iter_400.caffemodel
