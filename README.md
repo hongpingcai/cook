@@ -45,13 +45,12 @@ python step1_data_split.py
 
 **step2**: Train the caffe model 
 
-Please change the COOK_DIR in step2_train.sh before running.
-Also change a few directories in prototxt/train_val.prototxt and prototxt/solver_lr0001_fix3.prototxt.
+Please change the CAFFE_PATH in step2_train.sh before running:
 ```
-cd CAFFE_ROOT
-sh COOK_DIR/codes/step2_train.sh
+cd COOK_DIR/codes
+sh step2_train.sh
 ```
-After training, you'd better check the learning curve. Please change the caffe_path inside plot_learning_curve.py before running the following codes.  The output figure is saved as ../log/caffenetcook_learning_curve.png
+After training, you'd better check the learning curve. Please change the caffe_path in plot_learning_curve.py before running the following codes.  The output figure is saved as COOK_DIR/log/caffenetcook_lr0001_fix3_learning_curve.png
 ```
 cd COOK_DIR/codes
 python plot_learning_curve.py ../log/caffenetcook_lr0001_fix3.log ../log/caffenetcook_lr0001_fix3_learning_curve.png
@@ -109,7 +108,7 @@ The accuracy (= #img_correct_predict/134) on the 134 test images is **86.6%** wi
 Currently on my computer, the training takes about 4 minutes (for 400 iterations) with GPU (Titan X Pascal), the prediction time is about 0.03 seconds/image with GPU, or 0.16 seconds/image with CPU. 
 
 ## Analysis
-To note, I used a very basic caffe model to do the test, considering the small size of the dataset, less GPU memory used, less time trained. If the more advanced models, e.g., VGG-16, GoogleNet, ResNet, are used, the accuracy would usually go up. And also if more training images available, the accuracy would also increase.
+To note, I used a very basic caffe model to do the test, considering the small size of the dataset, less GPU memory used, less time for training. If the more advanced models, e.g., VGG-16, GoogleNet, ResNet, are used, the accuracy would usually go up. And also if more training images available, the accuracy would also increase.
 
 The model could be easily modified to predict more labels (e.g., all types of food), as long as enough labeled training images available. 
 

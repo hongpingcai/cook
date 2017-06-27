@@ -10,11 +10,11 @@ layer {
   transform_param {
     mirror: true
     crop_size: 227
-    mean_file: "/media/deepthought/DATA/Hongping/Codes/cook/model/imagenet_mean.binaryproto"
+    mean_file: "../model/imagenet_mean.binaryproto"
   }
   image_data_param {
-    source: "/media/deepthought/DATA/Hongping/Codes/cook/img/train_shuffle.txt"
-    root_folder: "/media/deepthought/DATA/Hongping/Codes/cook/codes/"
+    source: "../img/train_shuffle.txt"
+    root_folder: "../codes/"
     shuffle: true
     batch_size: 64
     new_height: 256
@@ -32,11 +32,11 @@ layer {
   transform_param {
     mirror: false
     crop_size: 227
-    mean_file: "/media/deepthought/DATA/Hongping/Codes/cook/model/imagenet_mean.binaryproto"
+    mean_file: "../model/imagenet_mean.binaryproto"
   }
   image_data_param {
-    source: "/media/deepthought/DATA/Hongping/Codes/cook/img/test_shuffle.txt"
-    root_folder: "/media/deepthought/DATA/Hongping/Codes/cook/codes/"
+    source: "../img/test_shuffle.txt"
+    root_folder: "../codes/"
     batch_size: 50
     new_height: 256
     new_width: 256

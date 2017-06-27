@@ -1,8 +1,9 @@
 #!/usr/bin/env sh
 
 
-TOOLS=./build/tools
-COOK_DIR=/media/deepthought/DATA/Hongping/Codes/cook
+CAFFE_PATH=/home/hal/Libraries/caffe
+TOOLS=$CAFFE_PATH/build/tools
+COOK_DIR=..
 MODEL=$COOK_DIR/model
 PROTOTXT=$COOK_DIR/prototxt
 RECORD=$COOK_DIR/log
